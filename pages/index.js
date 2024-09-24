@@ -68,6 +68,18 @@ export default function Home() {
             setPaymentLink(url);
         } catch (error) {
             console.error('Erro ao gerar link de pagamento', error);
+
+            // Trata o erro para exibição na tela
+            if (error.response) {
+                // O servidor respondeu com um status diferente de 2xx
+                setErrorMessage(`Erro: ${error.response.data.message || 'Erro desconhecido'}`);
+            } else if (error.request) {
+                // A requisição foi feita, mas não houve resposta
+                setErrorMessage('Erro: Nenhuma resposta recebida do servidor. Verifique sua conexão.');
+            } else {
+                // Outro erro ocorreu
+                setErrorMessage(`Erro: ${error.message}`);
+            }
         }
     };
 
@@ -113,6 +125,14 @@ export default function Home() {
                     </button>
                 </form>
 
+                {/* Exibição da mensagem de erro, se houver */}
+                {errorMessage && (
+                    <div style={styles.errorContainer}>
+                        <p style={styles.errorMessage}>{errorMessage}</p>
+                    </div>
+                )}
+
+                {/* Exibe o link de pagamento, se gerado */}
                 {paymentLink && (
                     <div style={styles.paymentSection}>
                         <h3 style={styles.paymentTitle}>Seu Link de Pagamento:</h3>
@@ -176,9 +196,6 @@ const styles = {
         cursor: 'pointer',
         transition: 'background-color 0.3s ease',
     },
-    buttonHover: {
-        backgroundColor: '#45a049',
-    },
     paymentSection: {
         marginTop: '30px',
         textAlign: 'center',
@@ -204,5 +221,15 @@ const styles = {
         fontSize: '16px',
         cursor: 'pointer',
         transition: 'background-color 0.3s ease',
-    }
+    },
+    errorContainer: {
+        marginTop: '20px',
+        padding: '10px',
+        backgroundColor: '#ffcccc',
+        borderRadius: '5px',
+    },
+    errorMessage: {
+        color: '#cc0000',
+        fontSize: '14px',
+    },
 };
