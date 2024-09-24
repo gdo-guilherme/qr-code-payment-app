@@ -72,58 +72,137 @@ export default function Home() {
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <h1>Gerador de Link de Pagamento</h1>
-            <form>
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={paymentInfo.customer.firstName}
-                    onChange={handleChange}
-                />
-                <br />
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={paymentInfo.customer.lastName}
-                    onChange={handleChange}
-                />
-                <br />
-                <input
-                    type="number"
-                    name="amount"
-                    placeholder="Amount"
-                    value={paymentInfo.amount}
-                    onChange={handleChange}
-                />
-                <br />
-                <input
-                    type="text"
-                    name="documentNumber"
-                    placeholder="Document Number"
-                    value={paymentInfo.customer.documentNumber}
-                    onChange={handleChange}
-                />
-                <br />
-                <button type="button" onClick={generatePaymentLink}>
-                    Gerar Link de Pagamento
-                </button>
-            </form>
-
-            {paymentLink && (
-                <div>
-                    <h3>Seu Link de Pagamento:</h3>
-                    <a href={paymentLink} target="_blank" rel="noopener noreferrer">
-                        {paymentLink}
-                    </a>
-                    <br />
-                    <button onClick={() => window.location.href = paymentLink}>
-                        Ir para o Link de Pagamento
+        <div style={styles.container}>
+            <div style={styles.formContainer}>
+                <h1 style={styles.title}>Gerador de Link de Pagamento</h1>
+                <form style={styles.form}>
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="Nome"
+                        value={paymentInfo.customer.firstName}
+                        onChange={handleChange}
+                        style={styles.input}
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Sobrenome"
+                        value={paymentInfo.customer.lastName}
+                        onChange={handleChange}
+                        style={styles.input}
+                    />
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="Valor"
+                        value={paymentInfo.amount}
+                        onChange={handleChange}
+                        style={styles.input}
+                    />
+                    <input
+                        type="text"
+                        name="documentNumber"
+                        placeholder="Número do Documento"
+                        value={paymentInfo.customer.documentNumber}
+                        onChange={handleChange}
+                        style={styles.input}
+                    />
+                    <button type="button" onClick={generatePaymentLink} style={styles.button}>
+                        Gerar Link de Pagamento
                     </button>
-                </div>
-            )}
+                </form>
+
+                {paymentLink && (
+                    <div style={styles.paymentSection}>
+                        <h3 style={styles.paymentTitle}>Seu Link de Pagamento:</h3>
+                        <a href={paymentLink} target="_blank" rel="noopener noreferrer" style={styles.paymentLink}>
+                            {paymentLink}
+                        </a>
+                        <br />
+                        <button onClick={() => window.location.href = paymentLink} style={styles.redirectButton}>
+                            Ir para o Link de Pagamento
+                        </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+
+const styles = {
+    container: {
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#f0f2f5',
+    },
+    formContainer: {
+        backgroundColor: '#fff',
+        padding: '30px',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        maxWidth: '400px',
+        width: '100%',
+        textAlign: 'center',
+    },
+    title: {
+        fontSize: '24px',
+        marginBottom: '20px',
+        color: '#333',
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    input: {
+        padding: '10px',
+        margin: '10px 0',
+        borderRadius: '5px',
+        border: '1px solid #ddd',
+        fontSize: '16px',
+        outline: 'none',
+        width: '100%',
+    },
+    button: {
+        padding: '10px',
+        marginTop: '20px',
+        borderRadius: '5px',
+        border: 'none',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        fontSize: '16px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+    },
+    buttonHover: {
+        backgroundColor: '#45a049',
+    },
+    paymentSection: {
+        marginTop: '30px',
+        textAlign: 'center',
+    },
+    paymentTitle: {
+        fontSize: '18px',
+        marginBottom: '10px',
+        color: '#333',
+    },
+    paymentLink: {
+        fontSize: '16px',
+        color: '#3498db',
+        textDecoration: 'none',
+        wordWrap: 'break-word',
+    },
+    redirectButton: {
+        padding: '10px',
+        marginTop: '10px',
+        borderRadius: '5px',
+        border: 'none',
+        backgroundColor: '#008CBA',
+        color: 'white',
+        fontSize: '16px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s ease',
+    }
+};
