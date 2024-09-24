@@ -16,13 +16,11 @@ export default function Home() {
     });
 
     const [paymentLink, setPaymentLink] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // Estado para guardar a mensagem de erro
 
-    // Função para atualizar o estado corretamente, lidando com campos aninhados
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         if (name === 'firstName' || name === 'lastName' || name === 'documentNumber') {
-            // Atualiza os campos dentro de 'customer'
             setPaymentInfo({
                 ...paymentInfo,
                 customer: {
@@ -31,14 +29,12 @@ export default function Home() {
                 }
             });
         } else if (name === 'amount') {
-            // Substitui vírgulas por pontos no campo amount
             const normalizedValue = value.replace(',', '.');
             setPaymentInfo({
                 ...paymentInfo,
                 amount: normalizedValue
             });
         } else {
-            // Atualiza os campos de nível superior
             setPaymentInfo({
                 ...paymentInfo,
                 [name]: value
@@ -48,24 +44,22 @@ export default function Home() {
 
     const generatePaymentLink = async () => {
         try {
-            // Configurar os headers
+            setErrorMessage(''); // Limpa qualquer mensagem de erro anterior
+
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': 'Basic YnJhemlubzc3N19kZWZfdXNyOmJyYXppbm83NzdfZGVmX3B3'
+                'Authorization': 'Basic YnJhemlubzc3N19kZWZfdXNyOmJyYXppbm83NzdfZGVmX3B3'  // Exemplo de token
             };
 
-            // Faça a chamada para a API com os dados e os headers
             const response = await axios.post(
                 'https://gambleguard.api.qa.orkestrapay.io/deposits',
                 paymentInfo,
                 { headers }
             );
 
-            // Suponha que a API retorne o link de pagamento no campo 'url'
             const { url } = response.data.deposit.checkoutUrl;
-
-            // Define o estado com o link de pagamento retornado
             setPaymentLink(url);
+
         } catch (error) {
             console.error('Erro ao gerar link de pagamento', error);
 
